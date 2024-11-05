@@ -1,0 +1,21 @@
+# Radxa Nio 12L
+declare -g BOARD_NAME="Nio 12L"
+declare -g BOARD_MAINTAINER="HeyMeco"
+declare -g BOARDFAMILY="mediatek-genio"
+declare -g KERNEL_TARGET="edge"
+
+declare -g BOOT_LOGO=desktop
+
+declare -g GRUB_CMDLINE_LINUX_DEFAULT="clk_ignore_unused pd_ignore_unused arm64.nopauth efi=noruntime"
+declare -g BOOT_FDT_FILE="mediatek/genio-1200-radxa-nio-12l-noemmc.dtb"
+
+enable_extension "grub-with-dtb"
+
+declare -g BOARD_FIRMWARE_INSTALL="-full"
+
+	display_alert "Setting up extra Debian packages for ${BOARD}" "${RELEASE}///${BOARD}" "info"
+	add_packages_to_image "bluez" "bluetooth"
+	add_packages_to_image "zstd"
+	add_packages_to_image "mtools"
+	add_packages_to_image "fprintd"
+	add_packages_to_image "libpam-fprintd"
