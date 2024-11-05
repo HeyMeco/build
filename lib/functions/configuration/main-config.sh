@@ -166,10 +166,10 @@ function do_main_configuration() {
 	# Support for LUKS / cryptroot
 	if [[ $CRYPTROOT_ENABLE == yes ]]; then
 		enable_extension "fs-cryptroot-support" # add the tooling needed, cryptsetup
-		ROOT_MAPPER="armbian-root"              # TODO: fixed name can't be used for parallel image building (rpardini: ?)
 		if [[ -z $CRYPTROOT_PASSPHRASE ]]; then # a passphrase is mandatory if rootfs encryption is enabled
 			exit_with_error "Root encryption is enabled but CRYPTROOT_PASSPHRASE is not set"
 		fi
+		[[ -z $CRYPTROOT_MAPPER ]] && CRYPTROOT_MAPPER="armbian-root" # TODO: fixed name can't be used for parallel image building (rpardini: ?)
 		[[ -z $CRYPTROOT_SSH_UNLOCK ]] && CRYPTROOT_SSH_UNLOCK=yes
 		[[ -z $CRYPTROOT_SSH_UNLOCK_PORT ]] && CRYPTROOT_SSH_UNLOCK_PORT=2022
 		# Default to pdkdf2, this used to be the default with cryptroot <= 2.0, however
@@ -186,8 +186,9 @@ function do_main_configuration() {
 		china)
 			[[ -z $USE_MAINLINE_GOOGLE_MIRROR ]] && [[ -z $MAINLINE_MIRROR ]] && MAINLINE_MIRROR=tuna
 			[[ -z $USE_GITHUB_UBOOT_MIRROR ]] && [[ -z $UBOOT_MIRROR ]] && UBOOT_MIRROR=gitee
-			[[ -z $GITHUB_MIRROR ]] && GITHUB_MIRROR=gitclone
+			[[ -z $GITHUB_MIRROR ]] && GITHUB_MIRROR=ghproxy
 			[[ -z $DOWNLOAD_MIRROR ]] && DOWNLOAD_MIRROR=china
+			[[ -z $GHCR_MIRROR ]] && GHCR_MIRROR=nju
 			;;
 		*) ;;
 
@@ -238,7 +239,7 @@ function do_main_configuration() {
 			declare -g -r GITHUB_SOURCE='https://hub.fastgit.xyz'
 			;;
 		ghproxy)
-			[[ -z $GHPROXY_ADDRESS ]] && GHPROXY_ADDRESS=mirror.ghproxy.com
+			[[ -z $GHPROXY_ADDRESS ]] && GHPROXY_ADDRESS=ghp.ci
 			declare -g -r GITHUB_SOURCE="https://${GHPROXY_ADDRESS}/https://github.com"
 			;;
 		gitclone)
@@ -253,6 +254,9 @@ function do_main_configuration() {
 		dockerproxy)
 			GHCR_MIRROR_ADDRESS="${GHCR_MIRROR_ADDRESS:-"ghcr.dockerproxy.com"}"
 			declare -g -r GHCR_SOURCE=$GHCR_MIRROR_ADDRESS
+			;;
+		nju)
+			declare -g -r GHCR_SOURCE='ghcr.nju.edu.cn'
 			;;
 		*)
 			declare -g -r GHCR_SOURCE='ghcr.io'
