@@ -7,7 +7,7 @@ declare -g KERNEL_TARGET="edge"
 declare -g BOOT_LOGO=desktop
 
 declare -g GRUB_CMDLINE_LINUX_DEFAULT="clk_ignore_unused pd_ignore_unused arm64.nopauth efi=noruntime"
-declare -g BOOT_FDT_FILE="mediatek/genio-1200-radxa-nio-12l-noemmc.dtb"
+declare -g BOOT_FDT_FILE="mediatek/genio-1200-radxa-nio-12l.dtb"
 
 enable_extension "grub-with-dtb"
 
