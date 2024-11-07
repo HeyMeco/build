@@ -12,10 +12,3 @@ declare -g BOOT_FDT_FILE="mediatek/genio-1200-radxa-nio-12l.dtb"
 enable_extension "grub-with-dtb"
 
 declare -g BOARD_FIRMWARE_INSTALL="-full"
-
-	display_alert "Setting up extra Debian packages for ${BOARD}" "${RELEASE}///${BOARD}" "info"
-	add_packages_to_image "bluez" "bluetooth"
-	add_packages_to_image "zstd"
-	add_packages_to_image "mtools"
-	add_packages_to_image "fprintd"
-	add_packages_to_image "libpam-fprintd"
