@@ -6,5 +6,6 @@ KERNEL_TARGET="collabora"
 KERNEL_TEST_TARGET="collabora"
 BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l"
 HAS_VIDEO_OUTPUT="yes"
+OFFSET=8 #Used to set the sector size to 4096 which is required by UFS
 
 
