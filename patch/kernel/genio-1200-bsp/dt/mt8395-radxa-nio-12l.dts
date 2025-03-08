@@ -154,6 +154,13 @@
 		enable-active-high;
 		regulator-always-on;
 	};
+
+	dmic_codec: dmic-codec {
+		#sound-dai-cells = <0>;
+		compatible = "dmic-codec";
+		num-channels = <2>;
+		wakeup-delay-ms = <200>;
+	};
 };
 
 &scp {
@@ -527,10 +534,6 @@
 	};
 };
 
-&dmic_codec {
-	wakeup-delay-ms = <200>;
-};
-
 &afe {
 	#sound-dai-cells = <0>;
 	memory-region = <&snd_dma_mem_reserved>;
@@ -595,6 +598,15 @@
 
 		codec-0 {
 			sound-dai = <&dp_tx>;
+		};
+	};
+
+	dai-link-5 {
+		sound-dai = <&afe>;
+		dai-link-name = "DMIC_BE";
+
+		codec-0 {
+			sound-dai = <&dmic_codec>;
 		};
 	};
 };
