@@ -4,7 +4,8 @@ BOARDFAMILY="genio"
 BOARD_MAINTAINER="HeyMeco"
 KERNEL_TARGET="collabora"
 KERNEL_TEST_TARGET="collabora"
-BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l.dtb"
+declare -g BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l.dtb" #declare needed else the extension looks for DT without .dtb
+enable_extension "grub-with-dtb"
 HAS_VIDEO_OUTPUT="yes"
 INSTALL_ARMBIAN_FIRMWARE="full"
 
