@@ -13,7 +13,7 @@ function extension_prepare_config__genio() {
 	if [[ "${BUILD_MINIMAL}" == "yes" ]]; then
 		display_alert "Extension: ${EXTENSION}" "skip installation in minimal images" "warn"
 		return 0
-	}
+	fi
 
 	# Add image suffix to indicate Genio BSP support
 	EXTRA_IMAGE_SUFFIXES+=("-genio-bsp")
@@ -27,7 +27,7 @@ function post_install_kernel_debs__genio() {
 	if [[ "${BUILD_MINIMAL}" == "yes" ]]; then
 		display_alert "Extension: ${EXTENSION}" "skip installation in minimal images" "warn"
 		return 0
-	}
+	fi
 
 	# Packages that are going to be installed, always, both for cli and desktop
 	declare -a pkgs=("libmali-mtk")
