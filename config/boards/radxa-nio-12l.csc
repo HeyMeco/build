@@ -2,7 +2,7 @@
 BOARD_NAME="Radxa Nio 12L"
 BOARDFAMILY="genio"
 BOARD_MAINTAINER="HeyMeco"
-KERNEL_TARGET="collabora canonical"
+KERNEL_TARGET="collabora mtk-bsp"
 KERNEL_TEST_TARGET="collabora"
 declare -g BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l.dtb" #declare needed else the extension looks for DT without .dtb
 enable_extension "grub-with-dtb"

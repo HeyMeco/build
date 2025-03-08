@@ -1,10 +1,10 @@
 config:
 
   # Just some info stuff; not used by the patching scripts
-  name: genio-1200-canonical
+  name: genio-1200-bsp
   kind: kernel
-  type: canonical # or: vendor
-  tag: Ubuntu-mtk-5.15.0-1037.44
+  type: mtk-bsp # or: vendor
+  branch: mtk-v5.15-dev
 
   # .dts files in these directories will be copied as-is to the build tree; later ones overwrite earlier ones.
   # This is meant to provide a way to "add a board DTS" without having to null-patch them in.
