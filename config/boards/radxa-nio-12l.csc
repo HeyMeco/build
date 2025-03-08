@@ -11,8 +11,8 @@ INSTALL_ARMBIAN_FIRMWARE="full"
 declare -g BOARD_FIRMWARE_INSTALL="-full"
 UBUNTU_RELEASE="jammy"
 
-function post_family_config__install_mediatek_firmware() {
+function post_family_tweaks__install_mediatek_firmware() {
 	display_alert "Installing mediatek firmware for Ubuntu" "${RELEASE}" "info"
-		install_deb_chroot linux-firmware-mediatek-genio
+		PACKAGE_LIST_BOARD="linux-firmware-mediatek-genio"
 }
 
