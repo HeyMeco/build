@@ -9,10 +9,12 @@ enable_extension "grub-with-dtb"
 HAS_VIDEO_OUTPUT="yes"
 INSTALL_ARMBIAN_FIRMWARE="full"
 declare -g BOARD_FIRMWARE_INSTALL="-full"
-UBUNTU_RELEASE="jammy"
+RELEASE="jammy"
 
-function post_family_tweaks__install_mediatek_firmware() {
-	display_alert "Installing mediatek firmware for Ubuntu" "${RELEASE}" "info"
-		PACKAGE_LIST_BOARD="linux-firmware-mediatek-genio"
-}
+# Add firmware package for Ubuntu only
+case "${DISTRIBUTION}" in
+    "Ubuntu")
+        PACKAGE_LIST_BOARD="linux-firmware-mediatek-genio"
+        ;;
+esac
 
