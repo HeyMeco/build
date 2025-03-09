@@ -30,7 +30,7 @@ function post_install_kernel_debs__genio() {
 	fi
 
 	# Packages that are going to be installed, always, both for cli and desktop
-	declare -a pkgs=("oem-baoshan-genio-desktop-meta mediatek-vpud-genio1200 mediatek-apusys-firmware-genio1200")
+	declare -a pkgs=("mediatek-vpud-genio1200 mediatek-apusys-firmware-genio1200")
 
 	# Add Mediatek Genio PPA
 	display_alert "Adding Mediatek Genio Public PPA" "${EXTENSION}" "info"
@@ -59,11 +59,11 @@ function post_install_kernel_debs__genio() {
 	display_alert "Updating sources list, after adding all PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	display_alert "Pulling specific Mali package version" "${EXTENSION}" "info"
-	do_with_retries 3 chroot_sdcard pull-ppa-debs libmali-mtk=43p0+d1985cb-0ubuntu7 ppa:asaly12/mtk-mali && sudo dpkg -i libmali-mtk_43p0*.deb
+	#display_alert "Pulling specific Mali package version" "${EXTENSION}" "info"
+	#do_with_retries 3 chroot_sdcard pull-ppa-debs libmali-mtk=43p0+d1985cb-0ubuntu7 --ppa asaly12/mtk-mali && sudo dpkg -i libmali-mtk_43p0*.deb
 
-	display_alert "Installing and holding Mali package" "${EXTENSION}" "info"
-	chroot_sdcard apt-mark hold libmali-mtk
+	#display_alert "Installing and holding Mali package" "${EXTENSION}" "info"
+	#chroot_sdcard apt-mark hold libmali-mtk
 
 	display_alert "Installing Genio BSP packages" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
