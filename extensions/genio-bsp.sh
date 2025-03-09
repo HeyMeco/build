@@ -30,7 +30,7 @@ function post_install_kernel_debs__genio() {
 	fi
 
 	# Packages that are going to be installed, always, both for cli and desktop
-	declare -a pkgs=("mediatek-vpud-genio1200 mediatek-apusys-firmware-genio1200")
+	declare -a pkgs=("mediatek-apusys-firmware-genio1200")
 
 	# Add Mediatek Genio PPA
 	display_alert "Adding Mediatek Genio Public PPA" "${EXTENSION}" "info"
@@ -45,16 +45,16 @@ function post_install_kernel_debs__genio() {
 	EOF
 
 	# Add MTK Mali PPA
-	display_alert "Adding MTK Mali PPA" "${EXTENSION}" "info"
-	do_with_retries 3 chroot_sdcard add-apt-repository ppa:asaly12/mtk-mali --yes --no-update
-
-	# Pin MTK Mali PPA
-	display_alert "Pinning MTK Mali PPA" "${EXTENSION}" "info"
-	cat <<- EOF > "${SDCARD}"/etc/apt/preferences.d/asaly12-mtk-mali-pin
-		Package: *
-		Pin: release o=LP-PPA-asaly12-mtk-mali
-		Pin-Priority: 1001
-	EOF
+#	display_alert "Adding MTK Mali PPA" "${EXTENSION}" "info"
+	do_with_retries 3 chroot_sdcard add-apt-repository ppa:mediatek-genio/genio-public --yes --no-update
+#
+#	# Pin MTK Mali PPA
+#	display_alert "Pinning MTK Mali PPA" "${EXTENSION}" "info"
+#	cat <<- EOF > "${SDCARD}"/etc/apt/preferences.d/asaly12-mtk-mali-pin
+#		Package: *
+#		Pin: release o=LP-PPA-asaly12-mtk-mali
+#		Pin-Priority: 1002
+#	EOF
 
 	display_alert "Updating sources list, after adding all PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
@@ -66,6 +66,7 @@ function post_install_kernel_debs__genio() {
 	#chroot_sdcard apt-mark hold libmali-mtk
 
 	display_alert "Installing Genio BSP packages" "${EXTENSION}" "info"
+	do_with_retries 3 chroot_sdcard_apt_get_install "mediatek-vpud-genio1200"
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
 
 	display_alert "Upgrading all packages" "${EXTENSION}" "info"
