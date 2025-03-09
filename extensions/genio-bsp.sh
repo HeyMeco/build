@@ -59,9 +59,6 @@ function post_install_kernel_debs__genio() {
 	display_alert "Updating sources list, after adding all PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	display_alert "Installing devscripts package" "${EXTENSION}" "info"
-	do_with_retries 3 chroot_sdcard_apt_get_install devscripts
-
 	display_alert "Pulling specific Mali package version" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard pull-ppa-debs libmali-mtk=43p0+d1985cb-0ubuntu7 ppa:asaly12/mtk-mali && sudo dpkg -i libmali-mtk_43p0*.deb
 
