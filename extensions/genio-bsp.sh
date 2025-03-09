@@ -30,7 +30,7 @@ function post_install_kernel_debs__genio() {
 	fi
 
 	# Packages that are going to be installed, always, both for cli and desktop
-	declare -a pkgs=("oem-baoshan-genio-desktop-meta")
+	declare -a pkgs=("oem-baoshan-genio-desktop-meta mediatek-vpud-genio1200 mediatek-apusys-firmware-genio1200")
 
 	# Add Mediatek Genio PPA
 	display_alert "Adding Mediatek Genio Public PPA" "${EXTENSION}" "info"
