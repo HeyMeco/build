@@ -1954,7 +1954,7 @@
 		};
 	};
 
-	opp_table_dla: opp-table-dla
+	opp_table_dla: opp-table-dla {
 		compatible = "operating-points-v2";
 
 		opp-0 {
@@ -1981,8 +1981,9 @@
 			opp-hz = /bits/ 64 <312000000>;
 			opp-microvolt = <575000>;
 		};
-};
+	};
 
+};
 
 &thermal-zones {
 	soc_max {
