@@ -45,129 +45,6 @@
 		spi5 = &spi5;
 	};
 
-	chosen {
-		stdout-path = "serial0:921600n8";
-	};
-
-	memory@40000000 {
-		device_type = "memory";
-		reg = <0 0x40000000 0x1 0x00000000>;
-	};
-
-	reserved-memory {
-		#address-cells = <2>;
-		#size-cells = <2>;
-		ranges;
-
-		/* 12 MiB reserved for OP-TEE (BL32)
-		 * +-----------------------+ 0x43e0_0000
-		 * |      SHMEM 2MiB       |
-		 * +-----------------------+ 0x43c0_0000
-		 * |        | TA_RAM  8MiB |
-		 * + TZDRAM +--------------+ 0x4340_0000
-		 * |        | TEE_RAM 2MiB |
-		 * +-----------------------+ 0x4320_0000
-		 */
-		optee_reserved: optee@43200000 {
-			no-map;
-			reg = <0 0x43200000 0 0x00c00000>;
-		};
-
-		scp_mem_reserved: scp_mem_region {
-			compatible = "shared-dma-pool";
-			reg = <0 0x50000000 0 0x2900000>;
-			no-map;
-		};
-
-		/* 2 MiB reserved for ARM Trusted Firmware (BL31) */
-		bl31_secmon_reserved: secmon@54600000 {
-			no-map;
-			reg = <0 0x54600000 0x0 0x200000>;
-		};
-
-		snd_dma_mem_reserved: snd_dma_mem_region {
-			compatible = "shared-dma-pool";
-			reg = <0 0x60000000 0 0x1100000>;
-			no-map;
-		};
-
-		apu_reserve_memory: apu-reserve-memory{
-			compatible = "shared-dma-pool";
-			size = <0 0x1400000>; //20 MB
-			alignment = <0 0x10000>;
-			reg = <0 0x62000000 0 0x1400000>;
-
-		};
-
-		vpu_reserve_memory: vpu-reserve-memory {
-			compatible = "shared-dma-pool";
-			size = <0 0x1400000>; //20 MB
-			alignment = <0 0x10000>;
-			reg = <0 0x53000000 0 0x1400000>;
-		};
-	};
-
-	firmware {
-		optee {
-			compatible = "linaro,optee-tz";
-			method = "smc";
-		};
-	};
-
-	gpio-keys {
-		compatible = "gpio-keys";
-		input-name = "gpio-keys";
-
-		key-f15 {
-			wakeup-source;
-			debounce-interval = <100>;
-			gpios = <&pio 106 GPIO_ACTIVE_LOW>;
-			label = "KEY_F15";
-			linux,code = <KEY_F15>;
-		};
-	};
-
-	gpio-leds {
-		compatible = "gpio-leds";
-		pinctrl-names = "default";
-
-		red-led {
-			label = "red-led";
-			gpios = <&pio 7 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "none";
-			default-state = "off";
-		};
-
-		blue-led {
-			label = "blue-led";
-			gpios = <&pio 6 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "heartbeat";
-			default-state = "on";
-		};
-	};
-
-	mtk_fsource: fsource {
-		compatible = "mtk-fsource";
-		vfsource-supply = <&mt6359_vefuse_ldo_reg>;
-	};
-
-	wifi_pwr_fixed_3v3: wifi-pwr-fixed-3v3 {
-		compatible = "regulator-fixed";
-		regulator-name = "wifi_pwr_fixed_3v3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&pio 67 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		regulator-always-on;
-	};
-
-	dmic_codec: dmic-codec {
-		#sound-dai-cells = <0>;
-		compatible = "dmic-codec";
-		num-channels = <2>;
-		wakeup-delay-ms = <200>;
-	};
-
 	soc {
 
 			gpu: mali@13000000 {
@@ -1087,6 +964,130 @@
 			};
 
 	}
+
+	chosen {
+		stdout-path = "serial0:921600n8";
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0x1 0x00000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* 12 MiB reserved for OP-TEE (BL32)
+		 * +-----------------------+ 0x43e0_0000
+		 * |      SHMEM 2MiB       |
+		 * +-----------------------+ 0x43c0_0000
+		 * |        | TA_RAM  8MiB |
+		 * + TZDRAM +--------------+ 0x4340_0000
+		 * |        | TEE_RAM 2MiB |
+		 * +-----------------------+ 0x4320_0000
+		 */
+		optee_reserved: optee@43200000 {
+			no-map;
+			reg = <0 0x43200000 0 0x00c00000>;
+		};
+
+		scp_mem_reserved: scp_mem_region {
+			compatible = "shared-dma-pool";
+			reg = <0 0x50000000 0 0x2900000>;
+			no-map;
+		};
+
+		/* 2 MiB reserved for ARM Trusted Firmware (BL31) */
+		bl31_secmon_reserved: secmon@54600000 {
+			no-map;
+			reg = <0 0x54600000 0x0 0x200000>;
+		};
+
+		snd_dma_mem_reserved: snd_dma_mem_region {
+			compatible = "shared-dma-pool";
+			reg = <0 0x60000000 0 0x1100000>;
+			no-map;
+		};
+
+		apu_reserve_memory: apu-reserve-memory{
+			compatible = "shared-dma-pool";
+			size = <0 0x1400000>; //20 MB
+			alignment = <0 0x10000>;
+			reg = <0 0x62000000 0 0x1400000>;
+
+		};
+
+		vpu_reserve_memory: vpu-reserve-memory {
+			compatible = "shared-dma-pool";
+			size = <0 0x1400000>; //20 MB
+			alignment = <0 0x10000>;
+			reg = <0 0x53000000 0 0x1400000>;
+		};
+	};
+
+	firmware {
+		optee {
+			compatible = "linaro,optee-tz";
+			method = "smc";
+		};
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+
+		key-f15 {
+			wakeup-source;
+			debounce-interval = <100>;
+			gpios = <&pio 106 GPIO_ACTIVE_LOW>;
+			label = "KEY_F15";
+			linux,code = <KEY_F15>;
+		};
+	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+
+		red-led {
+			label = "red-led";
+			gpios = <&pio 7 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "off";
+		};
+
+		blue-led {
+			label = "blue-led";
+			gpios = <&pio 6 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "heartbeat";
+			default-state = "on";
+		};
+	};
+
+	mtk_fsource: fsource {
+		compatible = "mtk-fsource";
+		vfsource-supply = <&mt6359_vefuse_ldo_reg>;
+	};
+
+	wifi_pwr_fixed_3v3: wifi-pwr-fixed-3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "wifi_pwr_fixed_3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&pio 67 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	dmic_codec: dmic-codec {
+		#sound-dai-cells = <0>;
+		compatible = "dmic-codec";
+		num-channels = <2>;
+		wakeup-delay-ms = <200>;
+	};
+
 };
 
 &scp {
