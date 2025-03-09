@@ -4,18 +4,22 @@ BOARDFAMILY="genio"
 BOARD_MAINTAINER="HeyMeco"
 KERNEL_TARGET="canonical,collabora"
 KERNEL_TEST_TARGET="canonical"
-declare -g BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l.dtb" #declare needed else the extension looks for DT without .dtb
+BOOT_FDT_FILE="mediatek/mt8395-radxa-nio-12l.dtb"
 enable_extension "grub-with-dtb"
 HAS_VIDEO_OUTPUT="yes"
-INSTALL_ARMBIAN_FIRMWARE="full"
-declare -g BOARD_FIRMWARE_INSTALL="-full"
-DISTRIBUTION="ubuntu"
-RELEASE="jammy"
 
-# Add firmware package for Ubuntu only
-case "${DISTRIBUTION}" in
-    "Ubuntu")
-        PACKAGE_LIST_BOARD="linux-firmware-mediatek-genio"
-        ;;
-esac
+# Post-config function for canonical branch
+function post_family_config__nio12l_canonical_setup() {
+	if [[ "${BRANCH}" == "canonical" ]]; then
+		display_alert "Setting up Genio-Firmware package for ${BOARD}" "${RELEASE}///${BOARD}" "info"
+		add_packages_to_image "linux-firmware-mediatek-genio"
+	fi
+}
 
+# Post-config function for collabora branch
+function post_family_config__nio12l_collabora_setup() {
+	if [[ "${BRANCH}" == "collabora" ]]; then
+		display_alert "Setting up Firmware-Full for ${BOARD}" "${RELEASE}///${BOARD}" "info"
+		declare -g BOARD_FIRMWARE_INSTALL="-full"
+	fi
+}
