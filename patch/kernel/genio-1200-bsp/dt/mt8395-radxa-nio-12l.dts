@@ -161,6 +161,13 @@
 		regulator-always-on;
 	};
 
+	dmic_codec: dmic-codec {
+		#sound-dai-cells = <0>;
+		compatible = "dmic-codec";
+		num-channels = <2>;
+		wakeup-delay-ms = <200>;
+	};
+
 	gpu: mali@13000000 {
 		compatible = "mediatek,mt8195-mali", "arm,mali-midgard";
 		reg = <0 0x13000000 0 0x4000>;
@@ -204,7 +211,7 @@
 		supply-names = "mali","mali_sram";
 		mali-supply = <&mt6315_7_vbuck1>;
 		mali_sram-supply = <&mt6359_vsram_others_ldo_reg>;
-		
+
 	};
 
 	gpu_opp_table: opp_table0 {
@@ -972,10 +979,6 @@
 	};
 };
 
-&dmic_codec {
-	wakeup-delay-ms = <200>;
-};
-
 &afe {
 	#sound-dai-cells = <0>;
 	memory-region = <&snd_dma_mem_reserved>;
@@ -1040,6 +1043,15 @@
 
 		codec-0 {
 			sound-dai = <&dp_tx>;
+		};
+	};
+
+	dai-link-5 {
+		sound-dai = <&afe>;
+		dai-link-name = "DMIC_BE";
+
+		codec-0 {
+			sound-dai = <&dmic_codec>;
 		};
 	};
 };
