@@ -12,7 +12,7 @@ HAS_VIDEO_OUTPUT="yes"
 function post_family_config__nio12l_canonical_setup() {
 	if [[ "${BRANCH}" == "canonical" ]]; then
 		display_alert "Setting up Genio-Firmware package for ${BOARD}" "${RELEASE}///${BOARD}" "info"
-		add_packages_to_image "linux-firmware-mediatek-genio" "ubuntu-dev-tools"
+		add_packages_to_image "linux-firmware-mediatek-genio" "ubuntu-dev-tools" "ubuntu-desktop"
 	fi
 }
 
