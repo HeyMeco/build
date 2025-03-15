@@ -41,9 +41,12 @@ function post_install_kernel_debs__genio() {
 	# Add Canonical HW enablement Repository
 	display_alert "Adding Canonical HW enablement Repository" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard add-apt-repository -s "deb http://oem.archive.canonical.com/ jammy-baoshan public" --yes --no-update
+	# Add Canonical HW enablement Repository key
+	do_with_retries 3 chroot_sdcard apt-key adv --recv-keys --keyserver keyserver.ubuntu.com F9FDA6BED73CDC22
+	#Pin libmali-mtk-8195
 	display_alert "Pinning Canonical HW enablement Repository" "${EXTENSION}" "info"
 	cat <<- EOF > "${SDCARD}"/etc/apt/preferences.d/oem-archive-jammy-baoshan-pin
-		Package: libmali-mtk-*
+		Package: libmali-mtk-8195
 		Pin: release o=oem.archive.canonical.com
 		Pin-Priority: 1001
 	EOF
