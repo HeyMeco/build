@@ -23,14 +23,8 @@ function post_install_kernel_debs__genio() {
 	# Only apply for jammy
 	[[ "${RELEASE}" != "jammy" ]] && return 0
 
-	# Deny on minimal CLI images
-	if [[ "${BUILD_MINIMAL}" == "yes" ]]; then
-		display_alert "Extension: ${EXTENSION}" "skip installation in minimal images" "warn"
-		return 0
-	fi
-
 	# Packages that are going to be installed, always, both for cli and desktop
-	declare -a pkgs=("mediatek-apusys-firmware-genio1200")
+	declare -a pkgs=("mediatek-apusys-firmware-genio1200" "mediatek-vpud-genio1200")
 
 	# Add Mediatek Genio PPA
 	display_alert "Adding Mediatek Genio Public PPA" "${EXTENSION}" "info"
@@ -44,29 +38,21 @@ function post_install_kernel_debs__genio() {
 		Pin-Priority: 1001
 	EOF
 
-	# Add MTK Mali PPA
-#	display_alert "Adding MTK Mali PPA" "${EXTENSION}" "info"
-	do_with_retries 3 chroot_sdcard add-apt-repository ppa:mediatek-genio/genio-public --yes --no-update
-#
-#	# Pin MTK Mali PPA
-#	display_alert "Pinning MTK Mali PPA" "${EXTENSION}" "info"
-#	cat <<- EOF > "${SDCARD}"/etc/apt/preferences.d/asaly12-mtk-mali-pin
-#		Package: *
-#		Pin: release o=LP-PPA-asaly12-mtk-mali
-#		Pin-Priority: 1002
-#	EOF
+	# Add Canonical HW enablement Repository
+	display_alert "Adding Canonical HW enablement Repository" "${EXTENSION}" "info"
+	do_with_retries 3 chroot_sdcard add-apt-repository -s "deb http://oem.archive.canonical.com/ jammy-baoshan public" --yes --no-update
+	display_alert "Pinning Canonical HW enablement Repository" "${EXTENSION}" "info"
+	cat <<- EOF > "${SDCARD}"/etc/apt/preferences.d/oem-archive-jammy-baoshan-pin
+		Package: libmali-mtk-*
+		Pin: release o=oem.archive.canonical.com
+		Pin-Priority: 1001
+	EOF
 
 	display_alert "Updating sources list, after adding all PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	#display_alert "Pulling specific Mali package version" "${EXTENSION}" "info"
-	#do_with_retries 3 chroot_sdcard pull-ppa-debs libmali-mtk=43p0+d1985cb-0ubuntu7 --ppa asaly12/mtk-mali && sudo dpkg -i libmali-mtk_43p0*.deb
-
-	#display_alert "Installing and holding Mali package" "${EXTENSION}" "info"
-	#chroot_sdcard apt-mark hold libmali-mtk
-
 	display_alert "Installing Genio BSP packages" "${EXTENSION}" "info"
-	do_with_retries 3 chroot_sdcard_apt_get_install "mediatek-vpud-genio1200"
+	do_with_retries 3 chroot_sdcard_apt_get_install "libmali-mtk-8195"
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
 
 	display_alert "Upgrading all packages" "${EXTENSION}" "info"
