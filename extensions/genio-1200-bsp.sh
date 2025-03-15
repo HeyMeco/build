@@ -23,6 +23,8 @@ function post_install_kernel_debs__genio() {
 	# Only apply for jammy
 	[[ "${RELEASE}" != "jammy" ]] && return 0
 
+	do_with_retries 3 chroot_sdcard echo Why does the first add-apt-repository not show up in the apt sources list?
+
 	# Add Canonical HW enablement Repository
 	display_alert "Adding Canonical HW enablement Repository" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard add-apt-repository -s "deb http://oem.archive.canonical.com/ jammy-baoshan public" --yes --no-update
