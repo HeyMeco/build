@@ -56,7 +56,8 @@ function post_install_kernel_debs__genio() {
 
 	display_alert "Installing Genio BSP packages" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_install "libmali-mtk-8195"
-	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
+	do_with_retries 3 chroot_sdcard_apt_get_install "mediatek-vpud-genio1200"
+	do_with_retries 3 chroot_sdcard_apt_get_install "mediatek-apusys-firmware-genio1200"
 
 	display_alert "Upgrading all packages" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get -o Dpkg::Options::="--force-confold" --allow-downgrades dist-upgrade
