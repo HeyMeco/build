@@ -6,9 +6,9 @@ Subject: arm64: dts: qcom: Add initial support for Radxa Dragon Q6A
 Signed-off-by: Xilin Wu <sophon@radxa.com>
 ---
  arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a-imx577.dtso |   80 +
- arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a.dts         | 1410 ++++++++++
+ arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a.dts         | 1411 ++++++++++
  arch/arm64/boot/dts/qcom/sc7280.dtsi                          |    2 +-
- 3 files changed, 1491 insertions(+), 1 deletion(-)
+ 3 files changed, 1492 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a-imx577.dtso b/arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a-imx577.dtso
 new file mode 100644
@@ -101,7 +101,7 @@ new file mode 100644
 index 000000000000..111111111111
 --- /dev/null
 +++ b/arch/arm64/boot/dts/qcom/qcs6490-radxa-dragon-q6a.dts
-@@ -0,0 +1,1404 @@
+@@ -0,0 +1,1405 @@
 +// SPDX-License-Identifier: BSD-3-Clause
 +/*
 + * Copyright (c) 2025 Radxa Computer (Shenzhen) Co., Ltd.
@@ -1408,6 +1408,7 @@ index 000000000000..111111111111
 +};
 +
 +&venus {
++	firmware-name = "qcom/vpu/vpu20_p1_gen2.mbn";
 +	status = "okay";
 +};
 +
