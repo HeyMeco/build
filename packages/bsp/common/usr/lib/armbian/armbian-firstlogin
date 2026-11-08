@@ -816,9 +816,20 @@ if [[ -f /root/.not_logged_in_yet ]] && tty -s; then
 
 	exec 9<> /run/armbian-firstlogin.lock || exit 1
 	if ! flock -n 9; then
+		sleep 1 # the holder writes its tty name after it takes the lock
 		holder=$(< /run/armbian-firstlogin.lock)
-		echo -e "\nFirst login setup is already running on ${holder:-another console}.\n"
-		exit 0
+		if [[ -n "${SSH_CONNECTION}" ]]; then
+			echo -e "\nFirst login setup is already running on ${holder:-another console}.\n"
+			exit 0
+		fi
+		# a console must not keep a root shell: wait, take over if the holder
+		# stops before it is done, log out when it is done
+		echo -e "\nFirst login setup is running on ${holder:-another console}."
+		echo -e "This console logs out when the setup is done.\n"
+		until flock -n 9; do
+			[[ -f /root/.not_logged_in_yet ]] || { kill -HUP "$PPID"; exit 0; }
+			sleep 1
+		done
 	fi
 	tty > /run/armbian-firstlogin.lock
 	# done elsewhere meanwhile: log a console out, keep an ssh shell
